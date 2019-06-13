@@ -1,5 +1,6 @@
 version: "2"
 services:
+
   influxdb:
     image: influxdb:latest
     container_name: influxdb
@@ -12,25 +13,6 @@ services:
       - 'env.influxdb'
     volumes:
        - /srv/docker/influxdb/data:/var/lib/influxdb
-
-  telegraf:
-    image: telegraf:latest
-    container_name: telegraf
-    hostname: telegraf
-    depends_on:
-       - influxdb
-    environment:
-       HOST_PROC: /rootfs/proc
-       HOST_SYS: /rootfs/sys
-       HOST_ETC: /rootfs/etc
-    links:
-       - influxdb
-    volumes:
-       - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
-       - /var/run/docker.sock:/var/run/docker.sock:ro
-       - /sys:/rootfs/sys:ro
-       - /proc:/rootfs/proc:ro
-       - /etc:/rootfs/etc:ro
 
   grafana:
     image: grafana/grafana:latest
